@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<PropertyGroup Label="PropertySheets_Included">
+  <qtapp_integration>qtapp_included</qtapp_integration>
+</PropertyGroup>
+    
+
+  <!-- General Environment values -->
+  <PropertyGroup Label="ServiceMacros">
+     <ProjectRoot>$(ProjectDir)..\</ProjectRoot>
+     <TempRoot>$(ProjectDir)</TempRoot>
+     <UsingQt5>0</UsingQt5>
+     <UsingWinsock>0</UsingWinsock>
+     <SolutionRootDirectory>$(ProjectDir)..\</SolutionRootDirectory>
+     <ExternalDirectory>$(SolutionRootDirectory)external\</ExternalDirectory>
+     <SourcesDirectory>$(SolutionRootDirectory)src\</SourcesDirectory>
+     <ScriptsDirectory>$(SolutionRootDirectory)scripts\</ScriptsDirectory>
+     <ResourcesDirectory>$(SolutionRootDirectory)resources\</ResourcesDirectory>
+     <ExternalsDirectory>$(SolutionRootDirectory)externals\</ExternalsDirectory>
+     <TmpBuildFilesRootDirectory>$(ProjectDir)obj\</TmpBuildFilesRootDirectory>
+     <BinariesDirectory>$(ProjectDir)bin\</BinariesDirectory>
+     <AppResourceFile>$(TmpBuildFilesRootDirectory)app_resource.qrc</AppResourceFile>
+  </PropertyGroup> 
+  <PropertyGroup Label="Globals">
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup> 
+
+  <PropertyGroup Label="GeneralProjectConfig">
+    <CharacterSet>NotSet</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>    
+  </PropertyGroup> 
+   
+  <PropertyGroup Label="GeneralConfig">
+    <OutDir>$(BinariesDirectory)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(TmpBuildFilesRootDirectory)$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+
+  <ImportGroup Label="QtGeneralConfig">
+    <Import Project="$(QT_PROPS)\qt_defaults.props" />
+    <Import Project="$(QT_PROPS)\Qt.props" />
+  </ImportGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SourcesDirectory);$(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <!-- 
+        SUBSYSTEM; Console or Windows
+      -->
+    <Link>
+      <AdditionalLibraryDirectories>$(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>shlwapi.lib;netapi32.lib;user32.lib;comctl32.lib;$(Qt_LIBS_);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>DEBUG;DEVELOPMENT;DEBUG_INFO;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>RELEASE;DEVELOPMENT;DEBUG_INFO;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleasePList'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>RELEASE;DEVELOPMENT;DEBUG_INFO;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>  
+
+</Project>
+
+
+
+
+
