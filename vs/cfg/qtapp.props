@@ -15,6 +15,7 @@
      <ExternalDirectory>$(SolutionRootDirectory)external\</ExternalDirectory>
      <SourcesDirectory>$(SolutionRootDirectory)src\</SourcesDirectory>
      <ScriptsDirectory>$(SolutionRootDirectory)scripts\</ScriptsDirectory>
+     <QtScriptsDirectory>$(SolutionRootDirectory)qt_scripts\</QtScriptsDirectory>
      <ResourcesDirectory>$(SolutionRootDirectory)resources\</ResourcesDirectory>
      <ExternalsDirectory>$(SolutionRootDirectory)externals\</ExternalsDirectory>
      <TmpBuildFilesRootDirectory>$(ProjectDir)obj\</TmpBuildFilesRootDirectory>
@@ -40,6 +41,12 @@
     <Import Project="$(QT_PROPS)\qt_defaults.props" />
     <Import Project="$(QT_PROPS)\Qt.props" />
   </ImportGroup>
+
+  <ImportGroup Label="QtQrcConfig">
+    <RootQRCFiles Include="$(QtScriptsDirectory)*.qrc" />
+    <AllPs1Files Include="$(QtScriptsDirectory)res\**\*.ps1" />
+    <RCCFiles Include="$(QtScriptsDirectory)*.rcc" />
+  </ItemGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>

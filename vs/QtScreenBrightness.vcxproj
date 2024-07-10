@@ -30,11 +30,20 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+
+  <!-- General Environment values -->
+  <PropertyGroup Label="IncludedExternalsConfig">
+    <UsingQt5>0</UsingQt5>
+    <UsingWinsock>0</UsingWinsock>
+  </PropertyGroup> 
+
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Label="QtSettings">
     <QtInstall>5.14.2_msvc2017_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" Label="QtSettings">
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -44,10 +53,7 @@
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
   </Target>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtPlugin>true</QtPlugin>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+  <ItemDefinitionGroup Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>Level3</WarningLevel>
@@ -61,22 +67,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ClCompile>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtUic Include="..\src\mainwindow.ui" />
+    <QtUic Include="$(SourcesDirectory)mainwindow.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
@@ -91,4 +91,38 @@
   </ItemGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <Target Name="CustomClean" BeforeTargets="Clean">
+    <Message Text="==============================================================================" Importance="high" />
+    <Message Text="CUSTOM CLEAN - DELETING $(OutDir)*" Importance="high" />
+    <Message Text="==============================================================================" Importance="high" />
+    <ItemGroup>
+      <_CustomFilesToDelete Include="$(OutDir)*" />
+    </ItemGroup>
+    <Delete Files="@(_CustomFilesToDelete)" />
+  </Target>
+  <Target Name="PrintBuildConfig" BeforeTargets="InitializeBuildStatus">
+    <Message Text="==========================================================" Importance="high" />
+    <Message Text="                PrintBuildConfig                                     " Importance="high" />
+    <Message Text="CharacterSet.....................: $(CharacterSet)" Importance="high" />
+    <Message Text="UseDebugLibraries................: $(UseDebugLibraries)" Importance="high" />
+    <Message Text="SubSystem........................: $(SubSystem)" Importance="high" />
+    <Message Text="IntDir...........................: $(IntDir)" Importance="high" />  
+    <Message Text="OutDir...........................: $(OutDir)" Importance="high" />
+    <Message Text="DebugInformationFormat...........: $(DebugInformationFormat)" Importance="high" />
+    <Message Text="MinimalRebuild...................: $(MinimalCompilationSetting)" Importance="high" />
+    <Message Text="==========================================================" Importance="high" />
+  </Target>
+  <Target Name="ValidateQtFolders" BeforeTargets="InitializeBuildStatus">
+        <Error
+            Text=" The environment value QT_ROOT is not set. Please set env value to the QT path: QT_ROOT"
+            Condition="'$(QT_ROOT)' == ''" />
+        <Error
+            Text=" The environment value QT_PROPS is not set. Please set env value to the QtMsBuild Path: QT_PROPS"
+            Condition="'$(QT_PROPS)' == ''" />
+  </Target>  
+  <ItemGroup Condition="'$(UsingQt5)' == '1'">
+    <QtRcc Include="$(AppResourceFile)">
+      <QmlCacheGenerate>false</QmlCacheGenerate>
+    </QtRcc>
+  </ItemGroup>  
 </Project>
